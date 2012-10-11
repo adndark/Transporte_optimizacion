@@ -9,6 +9,8 @@
  */
 package Transportation;
 import java.io.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.StringTokenizer;
 
 //testing github
@@ -187,6 +189,43 @@ public class Transportation_solver {
             System.out.println();
         }
         
+    }
+    
+    public String createLpModel(){
+        String file = "trans.lp";
+        
+        //here goes magic
+        int x = total_nodes + origin_nodes_counter;
+        int y = total_nodes + destiny_nodes_counter;
+        
+        String dosEquis[][] = new String[x][y];
+        
+        NumberFormat form = new DecimalFormat("00");
+        
+        for(int i = 0; i < x; i++){
+            for(int j = 0; j < y; j++){
+                dosEquis[i][j] = "x" + form.format(i) + form.format(j);
+            }
+        }
+        
+        file = "/*Modelo LP Auto-generado*/\n";
+        
+        String aux = "";
+        for(int i = 0; i < x; i++){
+            for(int j = 0; j < y; j++){
+                if(i == x-1 && j == y-1){
+                    aux = aux + augmented_cost_matrix[i][j] + dosEquis[i][j] + ";";
+                } else {
+                    aux = aux + augmented_cost_matrix[i][j] + dosEquis[i][j] + "+";
+                }
+            }
+            aux = aux + "\n";
+        }
+        file = file + aux;
+        
+        
+        
+        return file;
     }
     
 }
