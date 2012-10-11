@@ -15,6 +15,7 @@ public class Main {
         System.out.println("Running the transportation example");
         Transportation_solver ts = new Transportation_solver("config_file.txt");
         ts.print_object_information();
+        System.out.println(ts.createLpModel());
     }
     
     
