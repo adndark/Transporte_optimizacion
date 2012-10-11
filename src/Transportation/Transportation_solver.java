@@ -93,7 +93,7 @@ public class Transportation_solver {
                             }else{
                                 cost = Integer.parseInt(tmp_value);
                             }
-                            System.out.println(cost);
+                            //System.out.println(cost);
                             this.cost_matrix[node.charAt(0) - 'A'][node_counter] = cost;
                             node_counter++;
                         }
@@ -187,12 +187,12 @@ public class Transportation_solver {
         
         int counter = 0;
         while(!nodes_to_visit.isEmpty()){
-            System.out.println("counter "+ counter++);
+            //System.out.println("counter "+ counter++);
             current_suministry_sum = 0;
             current_node = nodes_to_visit.poll();
             current_node_suministry = (int) this.origin_nodes[current_node];
             if(is_node_calculated_array[current_node] == true){
-                System.out.println("continue because of is_node_calculated_array current_node "+ current_node);
+                //System.out.println("continue because of is_node_calculated_array current_node "+ current_node);
                 continue;
             }
             
@@ -202,7 +202,7 @@ public class Transportation_solver {
                 current_suministry_sum += suministry_matrix[row][current_node];
             }
             if(node_ready_to_push != false){
-                System.out.println("continue because of node_ready_to_push");
+                //System.out.println("continue because of node_ready_to_push");
                 continue;
             }
             
@@ -215,7 +215,7 @@ public class Transportation_solver {
                     nodes_to_visit.add(col);
                 }
             }
-            System.out.println("finished with new node");
+            //System.out.println("finished with new node");
             is_node_calculated_array[current_node] = true;
         }
         int current_index = 0;
@@ -250,19 +250,19 @@ public class Transportation_solver {
             System.out.println();
         }
         
-        System.out.println("Total origin nodes "+ this.origin_nodes_counter);
+        System.out.println("\nTotal origin nodes "+ this.origin_nodes_counter);
         System.out.println("Origin array");
         for(int i = 0; i < total_nodes; i++){
             System.out.print(this.origin_nodes[i] + " ");
         }System.out.println();
         
-        System.out.println("Total destiny nodes "+ this.destiny_nodes_counter);
+        System.out.println("\nTotal destiny nodes "+ this.destiny_nodes_counter);
         System.out.println("Destiny array");
         for(int i = 0; i < total_nodes; i++){
             System.out.print(this.destiny_nodes[i] + " ");
         }System.out.println();
         
-        System.out.println("Augemented Cost matrix");
+        System.out.println("\nAugemented Cost matrix");
         for(int i =0; i < total_nodes + this.origin_nodes_counter; i++){
             node = (char) ('A' + i - this.origin_nodes_counter);
             if(i >= this.origin_nodes_counter){
