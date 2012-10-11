@@ -9,7 +9,10 @@
  */
 package Transportation;
 import java.io.*;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
+
 
 //testing github
 public class Transportation_solver {
@@ -21,6 +24,8 @@ public class Transportation_solver {
     private int origin_nodes_counter;
     private int destiny_nodes_counter;
     private int total_nodes;
+    private double suministry_array[];
+    private double demand_array[];
     
     public Transportation_solver(String filename){
         read_config_file(filename);
@@ -43,6 +48,7 @@ public class Transportation_solver {
             //this.augmented_cost_matrix = new double[total_nodes + origin_nodes_counter][total_nodes + destiny_nodes_counter];
             this.origin_nodes = new double[total_nodes];
             this.destiny_nodes = new double[total_nodes];
+            
             
             while((bfLine = br.readLine()) != null){
                 
@@ -95,7 +101,11 @@ public class Transportation_solver {
                     }
                 }
             }
+            
         this.augmented_cost_matrix = new double[total_nodes + origin_nodes_counter][total_nodes + destiny_nodes_counter];
+        this.suministry_array = new double[this.total_nodes + this.origin_nodes_counter];
+        this.demand_array = new double[this.total_nodes + this.destiny_nodes_counter];
+        
         copy_cost_matrix_to_augmented_matrix();
                 
         }catch(IOException e){
@@ -141,9 +151,89 @@ public class Transportation_solver {
                 this.augmented_cost_matrix[i][j] = this.cost_matrix[i - this.origin_nodes_counter][j];
             }
         }
+    }
+    
+    
+    public void calculate_demand_suminister(){
         
+        boolean ready_to_calculate_matrix[][] = new boolean[this.total_nodes][this.total_nodes];
+        double suministry_matrix[][] = new double[this.total_nodes][this.total_nodes];
+        boolean is_node_calculated_array[] = new boolean[this.total_nodes];
+        Queue<Integer> nodes_to_visit = new LinkedList<Integer>();
         
+        for(int row = 0; row < this.total_nodes; row++ ){
+            is_node_calculated_array[row] = false;
+            for(int col = 0; col < this.total_nodes; col++){
+                if(this.cost_matrix[row][col] > 0 && this.cost_matrix[row][col] != 1000){
+                    ready_to_calculate_matrix[row][col] = true;
+                }else{
+                    ready_to_calculate_matrix[row][col] = false;
+                }
+                suministry_matrix[row][col] = 0;
+            }
+        }
         
+        //setting initial nodes to visit, origin nodes;
+        for(int i = 0; i < this.total_nodes; i++){
+            if(this.origin_nodes[i] > 0){
+                nodes_to_visit.add(i);
+            }
+        }
+        
+        int current_node = 0;
+        int current_node_suministry = 0;
+        int current_suministry_sum = 0;
+        boolean node_ready_to_push = false;
+        
+        int counter = 0;
+        while(!nodes_to_visit.isEmpty()){
+            System.out.println("counter "+ counter++);
+            current_suministry_sum = 0;
+            current_node = nodes_to_visit.poll();
+            current_node_suministry = (int) this.origin_nodes[current_node];
+            if(is_node_calculated_array[current_node] == true){
+                System.out.println("continue because of is_node_calculated_array current_node "+ current_node);
+                continue;
+            }
+            
+            for(int row = 0; row < this.total_nodes; row++){
+                if((node_ready_to_push = ready_to_calculate_matrix[row][current_node])== true)break;
+                //if((ready_to_calculate_matrix[row][current_node])== true)break;
+                current_suministry_sum += suministry_matrix[row][current_node];
+            }
+            if(node_ready_to_push != false){
+                System.out.println("continue because of node_ready_to_push");
+                continue;
+            }
+            
+            this.suministry_array[current_node + this.origin_nodes_counter] = current_suministry_sum + current_node_suministry;
+            
+            for(int col = 0; col < this.total_nodes; col++){
+                if(ready_to_calculate_matrix[current_node][col] == true){
+                    suministry_matrix[current_node][col] += this.suministry_array[current_node + this.origin_nodes_counter];
+                    ready_to_calculate_matrix[current_node][col] = false;
+                    nodes_to_visit.add(col);
+                }
+            }
+            System.out.println("finished with new node");
+            is_node_calculated_array[current_node] = true;
+        }
+        int current_index = 0;
+        for(int j = 0; j < this.total_nodes; j++ ){
+            if(this.origin_nodes[j] > 0 && this.origin_nodes[j] != 1000){
+                this.suministry_array[current_index++] = this.origin_nodes[j];
+            }
+        }
+        
+        for(int i = 0; i < this.total_nodes; i++){
+            this.demand_array[i] = this.suministry_array[i+this.origin_nodes_counter];
+        }
+        current_index = this.total_nodes;
+        for(int i = 0; i < this.total_nodes; i++){
+            if(this.destiny_nodes[i] > 0 && this.destiny_nodes[i] != 1000){
+                this.demand_array[current_index++] = this.destiny_nodes[i];
+            }
+        }
     }
     
     
@@ -185,6 +275,16 @@ public class Transportation_solver {
                 System.out.print( "\t");
             }
             System.out.println();
+        }
+        
+        System.out.println("\nSuministry_array");
+        for(int i = 0; i < this.total_nodes + this.origin_nodes_counter; i++){
+            System.out.printf("%.0f ", this.suministry_array[i]);
+        }
+        
+        System.out.println("\nDemand_array");
+        for(int i = 0; i < this.total_nodes + this.destiny_nodes_counter; i++){
+            System.out.printf("%.0f ", this.demand_array[i]);
         }
         
     }
