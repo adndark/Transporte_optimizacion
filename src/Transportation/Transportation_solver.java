@@ -9,9 +9,12 @@
  */
 package Transportation;
 import java.io.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
+import lpsolve.*;
 
 
 //testing github
@@ -19,6 +22,7 @@ public class Transportation_solver {
     
     private double cost_matrix[][];
     private double augmented_cost_matrix[][];
+    private double result_matrix[][];
     private double origin_nodes[];
     private double destiny_nodes[];
     private int origin_nodes_counter;
@@ -290,40 +294,117 @@ public class Transportation_solver {
     }
     
     public String createLpModel(){
-        String file = "trans.lp";
-        
+               
         //here goes magic
         int x = total_nodes + origin_nodes_counter;
-        int y = total_nodes + destiny_nodes_counter;
-        
-        String dosEquis[][] = new String[x][y];
-        
+        int y = total_nodes + destiny_nodes_counter;        
+        String dosEquis[][] = new String[x][y];        
         NumberFormat form = new DecimalFormat("00");
+        String file = "";
         
         for(int i = 0; i < x; i++){
             for(int j = 0; j < y; j++){
-                dosEquis[i][j] = "x" + form.format(i) + form.format(j);
+                dosEquis[i][j] = "x" + form.format(i + 1) + form.format(j + 1);
             }
         }
         
-        file = "/*Modelo LP Auto-generado*/\n";
+        file = "\n/*Modelo LP Auto-generado*/\n";
+        
+        file = file + "min:\n";
         
         String aux = "";
         for(int i = 0; i < x; i++){
             for(int j = 0; j < y; j++){
                 if(i == x-1 && j == y-1){
-                    aux = aux + augmented_cost_matrix[i][j] + dosEquis[i][j] + ";";
+                    aux = aux + (int)augmented_cost_matrix[i][j] + dosEquis[i][j] + ";";
                 } else {
-                    aux = aux + augmented_cost_matrix[i][j] + dosEquis[i][j] + "+";
+                    aux = aux + (int)augmented_cost_matrix[i][j] + dosEquis[i][j] + " + ";
                 }
             }
             aux = aux + "\n";
         }
         file = file + aux;
         
+        file = file + "\n/* Restricciones de Suministros */\n";
         
+        aux = "";
+        for(int i = 0; i < x; i++){
+            for(int j = 0; j < y; j++){
+                if(j == y-1){
+                    aux = aux + dosEquis[i][j] + " <= " + (int)suministry_array[i] + ";";
+                } else {
+                    aux = aux + dosEquis[i][j] + " + ";
+                }
+            }
+            aux = aux + "\n";
+        }
+        file = file + aux;
+        
+        file = file + "\n/* Restricciones de Demanda */\n";
+        
+        aux = "";
+        for(int i = 0; i < x; i++){
+            for(int j = 0; j < y; j++){
+                if(j == y-1){
+                    aux = aux + dosEquis[j][i] + " >= " + (int)demand_array[i] + ";";
+                } else {
+                    aux = aux + dosEquis[j][i] + " + ";
+                }
+            }
+            aux = aux + "\n";
+        }
+        file = file + aux;
+        
+        file = file + "\nint\n";
+                
+        aux = "";
+        for(int i = 0; i < x; i++){
+            for(int j = 0; j < y; j++){
+                if(i == x-1 && j == y-1){
+                    aux = aux + dosEquis[i][j] + ";";
+                } else {
+                    aux = aux + dosEquis[i][j] + " , ";
+                }
+            }
+            aux = aux + "\n";
+        }
+        file = file + aux;
+        
+        //write to file magic
+        try {
+            FileWriter fstream = new FileWriter("trans.lp");
+            BufferedWriter fout = new BufferedWriter(fstream);
+            fout.write(file);
+            fout.close();
+        } catch(IOException e){
+          System.out.println(e.getMessage());
+        }
         
         return file;
+    }
+    
+    public void getResult(){
+    
+        //LPSOLVE!
+        try{
+            //readLp(filename, verbose, modelName);
+            LpSolve solver = LpSolve.readLp("trans.lp", 0, null);
+            
+            //resolver
+            solver.solve();
+            
+            //DEBUG
+            System.out.println("Value of objective function: " + solver.getObjective());
+            double[] var = solver.getPtrVariables();
+            for (int i = 0; i < var.length; i++) {
+              System.out.println("Value of var[" + i + "] = " + var[i]);
+            }
+            
+            //liberar la memoria we
+            solver.deleteLp();
+        } catch(LpSolveException e){
+            System.out.println("Error: " + e.getMessage());
+        }
     }
     
 }

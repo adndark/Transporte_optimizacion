@@ -17,6 +17,7 @@ public class Main {
         ts.calculate_demand_suminister();
         ts.print_object_information();
         System.out.println(ts.createLpModel());
+        ts.getResult();
     }
     
     
