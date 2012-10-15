@@ -385,6 +385,7 @@ public class Transportation_solver {
     
     public void calcResult(){
     
+        //if(result_matrix == null)return;
         //LPSOLVE!
         try{
             //readLp(filename, verbose, modelName);
