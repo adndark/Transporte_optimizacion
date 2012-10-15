@@ -383,7 +383,7 @@ public class Transportation_solver {
         return file;
     }
     
-    public void getResult(){
+    public void calcResult(){
     
         //LPSOLVE!
         try{
@@ -392,15 +392,21 @@ public class Transportation_solver {
             
             //resolver
             solver.solve();
+                        
+            //pasar el arreglo de resultados a matriz
+            int x = total_nodes + origin_nodes_counter;
+            int y = total_nodes + destiny_nodes_counter;
             
-            //DEBUG
-            System.out.println("Value of objective function: " + solver.getObjective());
+            result_matrix = new double[x][y];
             double[] var = solver.getPtrVariables();
-            for (int i = 0; i < var.length; i++) {
-              System.out.println("Value of var[" + i + "] = " + var[i]);
+            
+            for(int i = 0; i < x; i++){
+                for(int j = 0; j < y; j++){
+                    result_matrix[i][j] = var[(i*4)+j];
+                }
             }
             
-            //liberar la memoria we
+            //liberar la memoria
             solver.deleteLp();
         } catch(LpSolveException e){
             System.out.println("Error: " + e.getMessage());
