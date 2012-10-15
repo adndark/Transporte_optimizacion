@@ -18,6 +18,7 @@ public class Main {
         ts.print_object_information();
         System.out.println(ts.createLpModel());
         ts.calcResult();
+        ts.printResult();
     }
     
     

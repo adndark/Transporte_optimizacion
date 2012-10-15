@@ -402,7 +402,7 @@ public class Transportation_solver {
             
             for(int i = 0; i < x; i++){
                 for(int j = 0; j < y; j++){
-                    result_matrix[i][j] = var[(i*4)+j];
+                    result_matrix[i][j] = var[(i * x) + j];
                 }
             }
             
@@ -412,5 +412,61 @@ public class Transportation_solver {
             System.out.println("Error: " + e.getMessage());
         }
     }
+    
+    public void printResult(){
+    
+        int x = result_matrix.length;
+        int y = result_matrix[0].length;
+        
+        System.out.println("\nMatriz Resultado:");
+        for(int i = 0; i < x; i++){
+            for(int j = 0; j < y; j++){
+                System.out.print((int)result_matrix[i][j] + "\t");
+            }
+            System.out.println("\n");
+       }
+    }
+
+    public double[][] getCost_matrix() {
+        return cost_matrix;
+    }
+
+    public double[][] getAugmented_cost_matrix() {
+        return augmented_cost_matrix;
+    }
+
+    public double[][] getResult_matrix() {
+        return result_matrix;
+    }
+
+    public double[] getOrigin_nodes() {
+        return origin_nodes;
+    }
+
+    public double[] getDestiny_nodes() {
+        return destiny_nodes;
+    }
+
+    public int getOrigin_nodes_counter() {
+        return origin_nodes_counter;
+    }
+
+    public int getDestiny_nodes_counter() {
+        return destiny_nodes_counter;
+    }
+
+    public int getTotal_nodes() {
+        return total_nodes;
+    }
+
+    public double[] getSuministry_array() {
+        return suministry_array;
+    }
+
+    public double[] getDemand_array() {
+        return demand_array;
+    }
+    
+    
     
 }
