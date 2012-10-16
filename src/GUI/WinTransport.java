@@ -367,7 +367,7 @@ public class WinTransport implements Runnable{
     }
     
     public void print_result(){
-        double result_matrix[][] = this.ObjTransSolver_.getResult_matrix();
+        /*double result_matrix[][] = this.ObjTransSolver_.getResult_matrix();
         int origin_nodes =  this.ObjTransSolver_.getOrigin_nodes_counter();
         int destiny_nodes = this.ObjTransSolver_.getDestiny_nodes_counter();
         int total_nodes = this.ObjTransSolver_.getTotal_nodes();
@@ -384,9 +384,11 @@ public class WinTransport implements Runnable{
                 }
             }
         }
-        
-        System.out.println(result);
-        this.result_text_area_.setText(result);
+        */
+        //System.out.println(result);
+        this.ObjTransSolver_.printResult();
+        this.ObjTransSolver_.print_result_in_nodes();
+        this.result_text_area_.setText(this.ObjTransSolver_.getResult_in_nodes_());
         
     }
     

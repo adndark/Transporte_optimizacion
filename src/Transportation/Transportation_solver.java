@@ -488,6 +488,54 @@ public class Transportation_solver {
     public double[] getDemand_array() {
         return demand_array;
     }
+
+    public String getResult_in_nodes_() {
+        return result_in_nodes_;
+    }
+
+    public void setCost_matrix(double[][] cost_matrix) {
+        this.cost_matrix = cost_matrix;
+    }
+
+    public void setAugmented_cost_matrix(double[][] augmented_cost_matrix) {
+        this.augmented_cost_matrix = augmented_cost_matrix;
+    }
+
+    public void setResult_matrix(double[][] result_matrix) {
+        this.result_matrix = result_matrix;
+    }
+
+    public void setOrigin_nodes(double[] origin_nodes) {
+        this.origin_nodes = origin_nodes;
+    }
+
+    public void setDestiny_nodes(double[] destiny_nodes) {
+        this.destiny_nodes = destiny_nodes;
+    }
+
+    public void setOrigin_nodes_counter(int origin_nodes_counter) {
+        this.origin_nodes_counter = origin_nodes_counter;
+    }
+
+    public void setDestiny_nodes_counter(int destiny_nodes_counter) {
+        this.destiny_nodes_counter = destiny_nodes_counter;
+    }
+
+    public void setTotal_nodes(int total_nodes) {
+        this.total_nodes = total_nodes;
+    }
+
+    public void setSuministry_array(double[] suministry_array) {
+        this.suministry_array = suministry_array;
+    }
+
+    public void setDemand_array(double[] demand_array) {
+        this.demand_array = demand_array;
+    }
+
+    public void setResult_in_nodes_(String result_in_nodes_) {
+        this.result_in_nodes_ = result_in_nodes_;
+    }
     
     
     
