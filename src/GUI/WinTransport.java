@@ -282,6 +282,7 @@ public class WinTransport implements Runnable{
           ObjTransSolver_ = new Transportation_solver(actual_file_name_);
           //ObjTransSolver_ = new Transportation_solver("config_file.txt");
           ObjTransSolver_.calculate_demand_suminister();
+          ObjTransSolver_.createLpModel();
           ObjTransSolver_.calcResult();
           print_result();
         }
