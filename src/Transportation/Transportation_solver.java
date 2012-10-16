@@ -30,6 +30,7 @@ public class Transportation_solver {
     private int total_nodes;
     private double suministry_array[];
     private double demand_array[];
+    private String result_in_nodes_;
     
     public Transportation_solver(String filename){
         read_config_file(filename);
@@ -343,12 +344,12 @@ public class Transportation_solver {
         file = file + "\n/* Restricciones de Demanda */\n";
         
         aux = "";
-        for(int i = 0; i < x; i++){
-            for(int j = 0; j < y; j++){
-                if(j == y-1){
-                    aux = aux + dosEquis[j][i] + " >= " + (int)demand_array[i] + ";";
+        for(int col = 0; col < y; col++){
+            for(int row = 0; row < x; row++){
+                if(row == x - 1){
+                    aux = aux + dosEquis[row][col] + " >= " + (int)demand_array[col] + ";";
                 } else {
-                    aux = aux + dosEquis[j][i] + " + ";
+                    aux = aux + dosEquis[row][col] + " + ";
                 }
             }
             aux = aux + "\n";
@@ -426,6 +427,26 @@ public class Transportation_solver {
             }
             System.out.println("\n");
        }
+    }
+    
+    public void print_result_in_nodes(){
+        char origin_node_label;
+        char destiny_node_label;
+        String result = "";
+        
+        for(int row = 0 ; row < this.origin_nodes_counter + this.total_nodes; row++){
+            for(int col = 0; col < this.total_nodes; col++){
+                if(this.result_matrix[row][col] > 0 && (row >= this.origin_nodes_counter) && row-this.origin_nodes_counter != col){
+                    origin_node_label = (char) ('A' + row - this.origin_nodes_counter);
+                    destiny_node_label = (char) ('A' + col);
+                    result += this.result_matrix[row][col] + " from " + origin_node_label + " to " + destiny_node_label + "\n";
+                }
+            }
+        }
+        
+        System.out.println(result);
+        this.result_in_nodes_ = result;
+        //this.result_text_area_.setText(result);
     }
 
     public double[][] getCost_matrix() {

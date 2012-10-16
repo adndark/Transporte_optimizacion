@@ -284,7 +284,6 @@ public class WinTransport implements Runnable{
           ObjTransSolver_.calculate_demand_suminister();
           ObjTransSolver_.calcResult();
           print_result();
-          
         }
     };
     
