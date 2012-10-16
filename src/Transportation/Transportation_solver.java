@@ -34,8 +34,6 @@ public class Transportation_solver {
     
     public Transportation_solver(String filename){
         read_config_file(filename);
-        
-        
     }
     
     public boolean read_config_file(String config_file){
