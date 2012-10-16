@@ -535,6 +535,13 @@ public class Transportation_solver {
         this.result_in_nodes_ = result_in_nodes_;
     }
     
-    
+    public void solve(){
+        this.calculate_demand_suminister();
+        this.print_object_information();
+        System.out.println(this.createLpModel());
+        this.calcResult();
+        this.printResult();
+        this.print_result_in_nodes();
+    }
     
 }

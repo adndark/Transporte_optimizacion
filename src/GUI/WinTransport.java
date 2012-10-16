@@ -69,11 +69,11 @@ public class WinTransport implements Runnable{
     
     
     
-    public WinTransport(Transportation_solver trans_sol_obj){
+    public WinTransport(){
         
        this.number_of_nodes_int = 11;
         
-       this.ObjTransSolver_ = trans_sol_obj;
+       //this.ObjTransSolver_ = trans_sol_obj;
        this.win_height_ = 800;
        this.win_width_ = 1200;
        
